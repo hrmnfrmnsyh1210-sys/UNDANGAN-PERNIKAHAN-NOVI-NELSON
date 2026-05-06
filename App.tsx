@@ -223,7 +223,12 @@ const App: React.FC = () => {
                     <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-[#8b6e4e]/5 rounded-full pointer-events-none"></div>
 
                     <div className="w-24 h-24 mx-auto bg-gradient-to-br from-[#c4a484]/30 to-[#8b6e4e]/20 rounded-full flex items-center justify-center mb-6 border-2 border-[#c4a484]/50 shadow-lg group-hover:scale-105 transition-transform duration-500">
-                      <Heart className="text-[#8b6e4e]" size={38} fill="#c4a484" fillOpacity={0.5} />
+                      <Heart
+                        className="text-[#8b6e4e]"
+                        size={38}
+                        fill="#c4a484"
+                        fillOpacity={0.5}
+                      />
                     </div>
 
                     <p className="text-[10px] tracking-[0.4em] uppercase text-[#8b6e4e] font-bold mb-3">
@@ -266,7 +271,12 @@ const App: React.FC = () => {
                     <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-[#8b6e4e]/5 rounded-full pointer-events-none"></div>
 
                     <div className="w-24 h-24 mx-auto bg-gradient-to-br from-[#4a3728]/20 to-[#722f37]/20 rounded-full flex items-center justify-center mb-6 border-2 border-[#8b6e4e]/40 shadow-lg group-hover:scale-105 transition-transform duration-500">
-                      <Heart className="text-[#722f37]" size={38} fill="#8b6e4e" fillOpacity={0.4} />
+                      <Heart
+                        className="text-[#722f37]"
+                        size={38}
+                        fill="#8b6e4e"
+                        fillOpacity={0.4}
+                      />
                     </div>
 
                     <p className="text-[10px] tracking-[0.4em] uppercase text-[#8b6e4e] font-bold mb-3">
@@ -306,7 +316,9 @@ const App: React.FC = () => {
                   transition={{ delay: 0.4, duration: 0.6 }}
                   className="text-center mt-12"
                 >
-                  <span className="font-script text-7xl text-[#c4a484]/60">&</span>
+                  <span className="font-script text-7xl text-[#c4a484]/60">
+                    &
+                  </span>
                 </motion.div>
               </div>
             </section>
@@ -370,7 +382,8 @@ const App: React.FC = () => {
                         Resepsi
                       </h4>
                       <p className="text-xl font-light mb-2">
-                        {WEDDING_DATA.reception.date || "Tanggal akan diumumkan"}
+                        {WEDDING_DATA.reception.date ||
+                          "Tanggal akan diumumkan"}
                       </p>
                       <p className="flex items-center justify-center gap-2 mb-8 opacity-80 text-lg">
                         <Clock size={20} />{" "}
@@ -379,7 +392,8 @@ const App: React.FC = () => {
                       <div className="h-[1px] bg-white/20 w-full mb-8"></div>
                       <MapPin className="mx-auto mb-3 opacity-50" size={24} />
                       <p className="font-medium text-lg leading-snug mb-2">
-                        {WEDDING_DATA.reception.location || "Tempat akan diumumkan"}
+                        {WEDDING_DATA.reception.location ||
+                          "Tempat akan diumumkan"}
                       </p>
                       {WEDDING_DATA.reception.address && (
                         <p className="text-sm opacity-70 italic mt-2">
@@ -400,10 +414,14 @@ const App: React.FC = () => {
                     </div>
                   </div>
 
-                  {(WEDDING_DATA.akad.mapUrl || WEDDING_DATA.reception.mapUrl) && (
+                  {(WEDDING_DATA.akad.mapUrl ||
+                    WEDDING_DATA.reception.mapUrl) && (
                     <div className="mt-16">
                       <a
-                        href={WEDDING_DATA.akad.mapUrl || WEDDING_DATA.reception.mapUrl}
+                        href={
+                          WEDDING_DATA.akad.mapUrl ||
+                          WEDDING_DATA.reception.mapUrl
+                        }
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-4 bg-[#fcfaf2] text-[#722f37] px-12 py-5 rounded-full font-bold shadow-2xl hover:bg-white transition-all transform hover:-translate-y-2 active:scale-95 text-lg"
@@ -423,7 +441,10 @@ const App: React.FC = () => {
                   >
                     <Sparkles size={20} className="text-[#c4a484]" />
                     <p className="text-white font-light tracking-widest text-base">
-                      Hiburan oleh <span className="font-bold text-[#c4a484]">Alista Band</span>
+                      Hiburan oleh{" "}
+                      <span className="font-bold text-[#c4a484]">
+                        Alista Band
+                      </span>
                     </p>
                     <Sparkles size={20} className="text-[#c4a484]" />
                   </motion.div>
@@ -634,10 +655,24 @@ const App: React.FC = () => {
                   Terima Kasih
                 </p>
                 <p className="font-serif-elegant italic opacity-60 text-base mb-4">
-                  Hiburan oleh <span className="font-bold not-italic text-[#c4a484]">Alista Band</span>
+                  Hiburan oleh{" "}
+                  <span className="font-bold not-italic text-[#c4a484]">
+                    Alista Band
+                  </span>
                 </p>
                 <p className="text-[11px] opacity-20 uppercase tracking-[0.3em] font-light">
                   Digital Invitation • Elegansi Tradisi 2026
+                </p>
+                <p className="text-[10px] opacity-30 uppercase tracking-[0.2em] font-light mt-2">
+                  Dibuat oleh{" "}
+                  <a
+                    href="https://www.instagram.com/uneeddeveloper/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#c4a484] hover:text-[#8b6e4e] transition-colors underline"
+                  >
+                    uneeddeveloper
+                  </a>
                 </p>
               </div>
             </footer>
