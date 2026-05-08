@@ -20,12 +20,20 @@ import { GuestWish } from "./types";
 import MusicPlayer from "./components/MusicPlayer";
 import EnvelopeOverlay from "./components/EnvelopeOverlay";
 import { generateTraditionalBlessing } from "./services/geminiService";
+import {
+  fetchWishes,
+  addWish,
+  WISHES_API_URL,
+} from "./services/wishesService";
 
 const App: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [guestName, setGuestName] = useState("");
   const [aiBlessing, setAiBlessing] = useState<string>("");
   const [wishes, setWishes] = useState<GuestWish[]>([]);
+  const [wishesLoading, setWishesLoading] = useState<boolean>(true);
+  const [wishesError, setWishesError] = useState<string | null>(null);
+  const [submittingWish, setSubmittingWish] = useState<boolean>(false);
   const [newWish, setNewWish] = useState({ name: "", message: "" });
   const [copiedAccount, setCopiedAccount] = useState<string | null>(null);
 
@@ -44,6 +52,29 @@ const App: React.FC = () => {
     }
   }, []);
 
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        setWishesLoading(true);
+        setWishesError(null);
+        const list = await fetchWishes();
+        if (!cancelled) setWishes(list);
+      } catch (err) {
+        if (!cancelled) {
+          setWishesError(
+            err instanceof Error ? err.message : "Gagal memuat ucapan",
+          );
+        }
+      } finally {
+        if (!cancelled) setWishesLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const handleOpen = async () => {
     setIsOpen(true);
     // Auto scroll ke awal konten setelah dibuka
@@ -60,20 +91,27 @@ const App: React.FC = () => {
     }
   };
 
-  const handleSubmitWish = (e: React.FormEvent) => {
+  const handleSubmitWish = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newWish.name || !newWish.message) return;
+    if (!newWish.name.trim() || !newWish.message.trim()) return;
+    if (submittingWish) return;
 
-    const wish: GuestWish = {
-      id: Date.now().toString(),
-      name: newWish.name,
-      relation: "Teman",
-      message: newWish.message,
-      timestamp: Date.now(),
-    };
-
-    setWishes([wish, ...wishes]);
-    setNewWish({ name: "", message: "" });
+    try {
+      setSubmittingWish(true);
+      setWishesError(null);
+      const saved = await addWish({
+        name: newWish.name.trim(),
+        message: newWish.message.trim(),
+      });
+      setWishes((prev: GuestWish[]) => [saved, ...prev]);
+      setNewWish({ name: "", message: "" });
+    } catch (err) {
+      setWishesError(
+        err instanceof Error ? err.message : "Gagal mengirim ucapan",
+      );
+    } finally {
+      setSubmittingWish(false);
+    }
   };
 
   const copyToClipboard = (text: string) => {
@@ -574,12 +612,23 @@ const App: React.FC = () => {
                           placeholder="Tuliskan harapan indah Anda..."
                         />
                       </div>
+                      {!WISHES_API_URL && (
+                        <p className="mb-4 text-xs text-[#722f37] bg-[#722f37]/10 border border-[#722f37]/20 rounded-lg p-3 leading-relaxed">
+                          Konfigurasi belum lengkap: isi <code>WISHES_API_URL</code> di <code>services/wishesService.ts</code> agar ucapan tersimpan ke Google Sheet.
+                        </p>
+                      )}
+                      {wishesError && (
+                        <p className="mb-4 text-xs text-[#722f37] bg-[#722f37]/10 border border-[#722f37]/20 rounded-lg p-3">
+                          {wishesError}
+                        </p>
+                      )}
                       <button
                         type="submit"
-                        className="w-full flex items-center justify-center gap-3 bg-[#8b6e4e] text-white py-5 rounded-xl font-bold shadow-lg hover:bg-[#722f37] transition-all transform active:scale-95 uppercase tracking-widest text-sm"
+                        disabled={submittingWish || !WISHES_API_URL}
+                        className="w-full flex items-center justify-center gap-3 bg-[#8b6e4e] text-white py-5 rounded-xl font-bold shadow-lg hover:bg-[#722f37] transition-all transform active:scale-95 uppercase tracking-widest text-sm disabled:opacity-60 disabled:cursor-not-allowed"
                       >
                         <Send size={20} />
-                        Kirim Ucapan
+                        {submittingWish ? "Mengirim..." : "Kirim Ucapan"}
                       </button>
                     </form>
                   </motion.div>
