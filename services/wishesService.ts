@@ -3,7 +3,7 @@ import { GuestWish } from "../types";
 // Tempel URL Web App dari Google Apps Script di sini.
 // Contoh: "https://script.google.com/macros/s/AKfyc.../exec"
 export const WISHES_API_URL =
-  "https://script.google.com/macros/s/AKfycbz0_wdH5b0_CNKi0dOE9kTQqyv-cK3vM9gvk2B_yb3GrV5342fXHoxGMorIsjU309LyKQ/exec";
+  "https://script.google.com/macros/s/AKfycbzUk7UZZ8zmoEYtNx6nm7eSefk2xGbozULSlt66PorcVFxjudHjdBzRfyl3xTsMVbFudA/exec";
 
 export async function fetchWishes(): Promise<GuestWish[]> {
   if (!WISHES_API_URL) return [];
